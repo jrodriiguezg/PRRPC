@@ -11,7 +11,7 @@ PRRPC es un monitor de estado físico externo diseñado para entornos Linux mode
 
 El sistema opera mediante una arquitectura Cliente-Servidor sobre puerto serie:
 
-1.  **Host (PC - Fedora):** Un servicio en Python (`monitor_pc.py`) monitoriza los eventos de foco del entorno de escritorio GNOME mediante `pyatspi`. Esto permite una detección precisa de la ventana activa en Wayland, superando las restricciones de seguridad habituales.
+1.  **Host (PC - Fedora):** Un servicio en Python (`servidor.py`) monitoriza los eventos de foco del entorno de escritorio GNOME mediante `pyatspi`. Esto permite una detección precisa de la ventana activa en Wayland, superando las restricciones de seguridad habituales.
 2.  **Cliente (Dispositivo - RP2040):** Un microcontrolador recibe los datos procesados y renderiza la interfaz gráfica. Utiliza iconos en formato raw (RGB565) para maximizar la velocidad de dibujo y minimizar el uso de memoria.
 
 ## 🛠️ Hardware Requerido
