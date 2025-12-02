@@ -75,15 +75,15 @@ Conexión mediante interfaz SPI0 en los pines laterales:
 1.  Conecta el dispositivo PRRPC al puerto USB.
 2.  Ejecuta el monitor en el PC:
     ```bash
-    python3 monitor_pc.py
+    python3 server.py
     ```
 3.  El dispositivo mostrará el logo de Fedora por defecto y cambiará automáticamente al detectar aplicaciones configuradas.
 
 ## 📁 Estructura del Repositorio
 
 * **`RP2040/`**: Carpeta principal del firmware. Contiene los scripts que deben subirse al microcontrolador (`main.py`, `st7789.py`) y las fuentes.
-* **`host/`**: Contiene el script `monitor_pc.py` que se ejecuta en el ordenador (Fedora).
-* **`assets/`**: Iconos originales en formato PNG.
+* **`host/`**: Contiene el script `server.py` que se ejecuta en el ordenador (Fedora).
+* **`bin/`**: Imágenes en formato binario 
 * **`convert2.py`**: Herramienta esencial para procesar las imágenes antes de subirlas.
 
 ## 📝 Notas Técnicas
