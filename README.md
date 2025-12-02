@@ -6,6 +6,7 @@ PRRPC es un monitor de estado físico externo diseñado para entornos Linux mode
 ![Hardware](https://img.shields.io/badge/Hardware-RP2040--Zero-green)
 ![OS](https://img.shields.io/badge/OS-Fedora%20Wayland-blue)
 
+
 ## ⚙️ Funcionamiento
 
 El sistema opera mediante una arquitectura Cliente-Servidor sobre puerto serie:
@@ -78,11 +79,12 @@ Conexión mediante interfaz SPI0 en los pines laterales:
     ```
 3.  El dispositivo mostrará el logo de Fedora por defecto y cambiará automáticamente al detectar aplicaciones configuradas.
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del Repositorio
 
-* `/host`: Scripts de Python para ejecutar en el PC.
-* `/device`: Scripts de MicroPython para la RP2040.
-* `/assets`: Iconos originales y script de conversión.
+* **`RP2040/`**: Carpeta principal del firmware. Contiene los scripts que deben subirse al microcontrolador (`main.py`, `st7789.py`) y las fuentes.
+* **`host/`**: Contiene el script `monitor_pc.py` que se ejecuta en el ordenador (Fedora).
+* **`assets/`**: Iconos originales en formato PNG.
+* **`convert2.py`**: Herramienta esencial para procesar las imágenes antes de subirlas.
 
 ## 📝 Notas Técnicas
 
@@ -156,3 +158,33 @@ elif comando == "FIREFOX": archivo = "firefox.bin"
 elif comando == "NOTAS": archivo = "obsidian.bin" # <--- NUEVA LÍNEA: Asigna el código al archivo
 ```
 Guarda los cambios, reinicia el script del PC y ¡listo! Tu nueva app ahora tendrá su propio icono personalizado.
+
+## 🖼️ Gestión de Imágenes: Uso de `convert2.py`
+
+La RP2040, aunque potente, no está optimizada para decodificar archivos `.png` o `.jpg` en tiempo real mientras gestiona la pantalla, ya que esto consume demasiada memoria RAM y CPU.
+
+Para solucionar esto, utilizamos el script **`convert2.py`**.
+
+### ¿Qué hace este script?
+Este script de Python toma tus iconos estándar (PNG con transparencia) y los "pre-renderiza" a un formato crudo llamado **Raw RGB565**. Básicamente, convierte la imagen en una matriz de bytes exacta a la que la pantalla espera recibir, permitiendo que la RP2040 simplemente "copie y pegue" los datos a la pantalla instantáneamente sin procesarlos.
+
+### Pasos para convertir nuevas imágenes:
+
+1.  **Prepara tus imágenes:**
+    * Deben ser formato **PNG**.
+    * Tamaño recomendado: **150x150 píxeles**.
+    * Fondo transparente (el script añadirá automáticamente el fondo negro para que se fusione con la interfaz).
+
+2.  **Ejecuta el conversor:**
+    Asegúrate de tener las imágenes en la misma carpeta que el script y ejecuta:
+    ```bash
+    python3 convert2.py
+    ```
+
+3.  **Resultado:**
+    El script generará archivos con extensión **`.bin`** (ej: `firefox.bin`).
+
+4.  **Subida al Dispositivo:**
+    Sube estos archivos `.bin` directamente a la raíz de la carpeta `RP2040+` (o la raíz de la placa si usas Thonny) junto con el código `main.py`.
+
+> **Nota Técnica:** El formato RGB565 utiliza 2 bytes por píxel (5 bits rojo, 6 verde, 5 azul). Un icono de 150x15
