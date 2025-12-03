@@ -1,6 +1,3 @@
-Aquí tienes la documentación actualizada. He incorporado los cambios importantes de la V2: la integración del servidor web con Flask, el "Emoji Pad", el cambio de tamaño de los iconos a 100x100px y la nueva lógica de código basada en diccionarios.
-
-Puedes copiar y pegar esto directamente en tu README.md.
 📟 PRRPC V2 (Pico Real Rich Presence & Control)
 
 PRRPC V2 es la evolución del monitor de estado físico para Linux. Ahora no solo visualiza tu actividad en Fedora/Wayland, sino que se convierte en un MacroDeck interactivo.
