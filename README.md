@@ -209,6 +209,10 @@ This Python script takes your standard icons (PNG with transparency) and "pre-re
 
 > **Technical Note:** The RGB565 format uses 2 bytes per pixel (5 bits red, 6 green, 5 blue). A 150x150 icon...
 
+
+## 📄 Licese
+This proyect is license under the **GNU General Public License v3.0 (GPLv3)**. See `LICENSE` for more details
+
 ---
 ---
 
@@ -403,3 +407,6 @@ Este script de Python toma tus iconos estándar (PNG con transparencia) y los "p
     Sube estos archivos `.bin` directamente a la raíz de la carpeta `RP2040+` (o la raíz de la placa si usas Thonny) junto con el código `main.py`.
 
 > **Nota Técnica:** El formato RGB565 utiliza 2 bytes por píxel (5 bits rojo, 6 verde, 5 azul). Un icono de 150x15
+
+## 📄 Licencia
+Este proyecto está licenciado bajo la **GNU General Public License v3.0 (GPLv3)**. Consulta el archivo `LICENSE` para más detalles.
