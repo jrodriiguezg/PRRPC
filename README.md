@@ -1,7 +1,7 @@
 # 📟 PRRPC V2 (Pico Real Rich Presence & Control)
 
 **PRRPC V2** es la evolución del monitor de estado físico para Linux. Ahora no solo visualiza tu actividad en **Fedora/Wayland**, sino que se convierte en un **MacroDeck interactivo**.
-<La version mas basica de este proyecto se puede encontar en https://github.com/jrodriiguezg/PRRPC/tree/main>
+> La version mas basica de este proyecto se puede encontar en https://github.com/jrodriiguezg/PRRPC/tree/main
 
 Esta versión introduce una **Interfaz Web de Control**, permitiéndote enviar reacciones (Emojis) a la pantalla manualmente o volver al modo automático de detección de ventanas con un solo clic.
 
