@@ -63,14 +63,14 @@ Connection via SPI0 interface on the side pins:
 
 1.  **Dependencies:**
     Install necessary libraries for serial communication and accessibility:
-        **Fedora**
-    ```bash
-    sudo dnf install python3-pyatspi python3-pyserial
-    ```
-        **Debian/Ubuntu**
-    ```bash
-    sudo apt install python3-pyatspi python3-pyserial
-    ```
+    *   **Fedora:**
+        ```bash
+        sudo dnf install python3-pyatspi python3-pyserial
+        ```
+    *   **Debian/Ubuntu:**
+        ```bash
+        sudo apt install python3-pyatspi python3-pyserial
+        ```
 
 2.  **Enable GNOME Accessibility:**
     Required for the script to detect windows:
@@ -259,14 +259,14 @@ Conexión mediante interfaz SPI0 en los pines laterales:
 
 1.  **Dependencias:**
     Instala las librerías necesarias para la comunicación serie y accesibilidad:
-        **Fedora**
-    ```bash
-    sudo dnf install python3-pyatspi python3-pyserial
-    ```
-        **Debian/Ubuntu**
-    ```bash
-    sudo apt install python3-pyatspi python3-pyserial
-    ```
+    *   **Fedora:**
+        ```bash
+        sudo dnf install python3-pyatspi python3-pyserial
+        ```
+    *   **Debian/Ubuntu:**
+        ```bash
+        sudo apt install python3-pyatspi python3-pyserial
+        ```
 
 2.  **Habilitar Accesibilidad en GNOME:**
     Necesario para que el script detecte las ventanas:
