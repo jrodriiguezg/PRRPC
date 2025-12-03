@@ -1,190 +1,164 @@
-# 📟 PRRPC (Pico Real Rich Presence)
+Aquí tienes la documentación actualizada. He incorporado los cambios importantes de la V2: la integración del servidor web con Flask, el "Emoji Pad", el cambio de tamaño de los iconos a 100x100px y la nueva lógica de código basada en diccionarios.
 
-PRRPC es un monitor de estado físico externo diseñado para entornos Linux modernos (Fedora/Wayland). Muestra información contextual de la aplicación activa en una pantalla secundaria conectada por USB, mejorando la gestión del tiempo y la visibilidad de tareas.
+Puedes copiar y pegar esto directamente en tu README.md.
+📟 PRRPC V2 (Pico Real Rich Presence & Control)
 
-![Estado](https://img.shields.io/badge/Estado-Estable-blue)
-![Hardware](https://img.shields.io/badge/Hardware-RP2040--Zero-green)
-![OS](https://img.shields.io/badge/OS-Fedora%20Wayland-blue)
+PRRPC V2 es la evolución del monitor de estado físico para Linux. Ahora no solo visualiza tu actividad en Fedora/Wayland, sino que se convierte en un MacroDeck interactivo.
 
+Esta versión introduce una Interfaz Web de Control, permitiéndote enviar reacciones (Emojis) a la pantalla manualmente o volver al modo automático de detección de ventanas con un solo clic.
+✨ Novedades de la V2
 
-## ⚙️ Funcionamiento
+    Modo Híbrido: Funciona como monitor de aplicaciones (Auto) o como panel de Emojis (Manual).
 
-El sistema opera mediante una arquitectura Cliente-Servidor sobre puerto serie:
+    Interfaz Web Local: Controla la pantalla desde cualquier navegador en tu PC (localhost:5000).
 
-1.  **Host (PC - Fedora):** Un servicio en Python (`server.py`) monitoriza los eventos de foco del entorno de escritorio GNOME mediante `pyatspi`. Esto permite una detección precisa de la ventana activa en Wayland, superando las restricciones de seguridad habituales.
-2.  **Cliente (Dispositivo - RP2040):** Un microcontrolador recibe los datos procesados y renderiza la interfaz gráfica. Utiliza iconos en formato raw (RGB565) para maximizar la velocidad de dibujo y minimizar el uso de memoria.
+    Arquitectura Multihilo: El servidor de PC ahora gestiona la detección de ventanas y el servidor web simultáneamente.
 
-## 🛠️ Hardware Requerido
+    Optimización Gráfica: Nuevo sistema de mapeo por diccionarios y assets redimensionados a 100x100px para mayor fluidez.
 
-* **Microcontrolador:** Waveshare RP2040-Zero (o compatible Raspberry Pi Pico).
-* **Visualización:** Módulo LCD 1.69" IPS (Controlador ST7789, Resolución 240x280).
-* **Interfaz:** Conexión USB-C (Datos y alimentación).
+⚙️ Funcionamiento
 
-### 🔌 Diagrama de Conexiones (RP2040-Zero)
+El sistema utiliza una arquitectura avanzada Cliente-Servidor sobre puerto serie:
 
-Conexión mediante interfaz SPI0 en los pines laterales:
+    Host (PC - Fedora):
 
-| Pin Pantalla | Pin RP2040-Zero | Función |
-| :--- | :--- | :--- |
-| **VCC** | 3V3 | Alimentación (3.3V) |
-| **GND** | GND | Tierra Común |
-| **SCL** | GP2 | Reloj SPI (SCK) |
-| **SDA** | GP3 | Datos SPI (MOSI) |
-| **RES** | GP4 | Reset del Display |
-| **DC** | GP5 | Datos/Comando |
-| **CS** | GP1 | Selección de Chip |
-| **BLK** | GP0 | Retroiluminación |
+        Ejecuta un script híbrido (server.py) que combina Flask (Web) y pyatspi (Monitorización GNOME/Wayland) usando Threading.
 
----
+        Detecta la ventana activa o recibe comandos de la web y los envía a la RP2040.
 
-## 💾 Instalación
+    Cliente (Dispositivo - RP2040):
 
-### 1. Configuración del Dispositivo (Firmware)
+        Recibe comandos simples (ej: FIREFOX, FELIZ, AUTO).
 
-1.  Instala el firmware de **MicroPython** en la RP2040.
-2.  Sube los siguientes archivos a la raíz del dispositivo:
-    * `main.py`: Código fuente del cliente.
-    * `st7789.py`: Controlador de pantalla optimizado.
-3.  **Carga de Recursos Gráficos:**
-    * Convierte tus imágenes PNG (150x150px) usando el script `convertir.py`.
-    * Sube los archivos `.bin` resultantes (`firefox.bin`, `vscode.bin`, etc.) a la memoria de la placa.
+        Busca en su diccionario interno (EMOJI_MAP) y carga instantáneamente el archivo .bin (RGB565) correspondiente desde la memoria flash.
 
-### 2. Configuración del Host (Fedora Linux)
+🛠️ Hardware Requerido
 
-1.  **Dependencias:**
-    Instala las librerías necesarias para la comunicación serie y accesibilidad:
-    ```bash
-    sudo dnf install python3-pyatspi python3-pyserial
-    ```
+    Microcontrolador: Waveshare RP2040-Zero (o Raspberry Pi Pico).
 
-2.  **Habilitar Accesibilidad en GNOME:**
-    Necesario para que el script detecte las ventanas:
-    ```bash
+    Visualización: Módulo LCD 1.69" IPS (Driver ST7789, Resolución 240x280).
+
+    Interfaz: Cable USB-C (Datos y alimentación).
+
+🔌 Diagrama de Conexiones (RP2040-Zero)
+Pin Pantalla	Pin RP2040-Zero	Función
+VCC	3V3	Alimentación (3.3V)
+GND	GND	Tierra Común
+SCL	GP2	Reloj SPI (SCK)
+SDA	GP3	Datos SPI (MOSI)
+RES	GP4	Reset del Display
+DC	GP5	Datos/Comando
+CS	GP1	Selección de Chip
+BLK	GP0	Retroiluminación
+💾 Instalación
+1. Configuración del Dispositivo (RP2040)
+
+    Instala el firmware de MicroPython en la RP2040.
+
+    Sube los siguientes archivos a la raíz del dispositivo:
+
+        main.py: Código principal (versión con EMOJI_MAP).
+
+        st7789.py: Controlador de pantalla.
+
+        vga1_bold_16x16.py: Fuente para el texto.
+
+    Recursos Gráficos:
+
+        Convierte tus imágenes PNG (100x100px) usando el script convertir.py.
+
+        Sube todos los archivos .bin resultantes (feliz.bin, firefox.bin, etc.) a la raíz de la placa.
+
+2. Configuración del Host (PC Linux)
+
+    Instalar Dependencias: Necesitas las librerías de sistema y Python para la comunicación serial, accesibilidad y el servidor web.
+    Bash
+
+sudo dnf install python3-pyatspi python3-pyserial python3-flask
+# O usando pip
+pip install pyserial flask
+
+Configurar GNOME (Wayland): Para permitir que el script detecte las ventanas:
+Bash
+
     gsettings set org.gnome.desktop.interface toolkit-accessibility true
-    ```
 
-3.  **Configuración de Firefox (Importante):**
-    Para que Firefox sea detectable en Wayland:
-    * En `about:config`, establece `accessibility.force_disabled` a `0`.
-    * Establece `accessibility.loaded_via_client_api` a `true`.
+    Configurar Firefox: En about:config:
 
----
+        accessibility.force_disabled -> 0
 
-## 🚀 Uso
+        accessibility.loaded_via_client_api -> true
 
-1.  Conecta el dispositivo PRRPC al puerto USB.
-2.  Ejecuta el monitor en el PC:
-    ```bash
+🚀 Uso
+
+    Conecta la RP2040 al USB.
+
+    Ejecuta el servidor en tu PC:
+    Bash
+
     python3 server.py
-    ```
-3.  El dispositivo mostrará el logo de Fedora por defecto y cambiará automáticamente al detectar aplicaciones configuradas.
 
-## 📁 Estructura del Repositorio
+    Modo Automático: La pantalla cambiará sola según la app que uses.
 
-* **`RP2040/`**: Carpeta principal del firmware. Contiene los scripts que deben subirse al microcontrolador (`main.py`, `st7789.py`) y las fuentes.
-* **`host/`**: Contiene el script `server.py` que se ejecuta en el ordenador (Fedora).
-* **`bin/`**: Imágenes en formato binario 
-* **`convert2.py`**: Herramienta esencial para procesar las imágenes antes de subirlas.
+    Modo Emoji/Manual:
 
-## 📝 Notas Técnicas
+        Abre tu navegador y ve a: http://localhost:5000
 
-* **Pantalla:** Se utiliza una resolución lógica de 280x240 (orientación horizontal).
-* **Rendimiento:** El script del host funciona por eventos (no por sondeo), por lo que el consumo de CPU es despreciable.
-* **Compatibilidad:** Diseñado para Wayland, pero compatible con X11 si se usa el backend AT-SPI.
----
+        Haz clic en cualquier Emoji: La pantalla del RP2040 mostrará el emoji y bloqueará la detección de ventanas.
 
-## 📸 Galería y Demostración
+        Haz clic en "❌ MODO AUTOMÁTICO" para volver a mostrar las apps.
 
-El dispositivo PRRPC se integra perfectamente en el flujo de trabajo del escritorio. A continuación se muestran ejemplos reales del dispositivo en funcionamiento, reaccionando a las aplicaciones abiertas en el monitor principal.
+🎨 Personalización (Nuevas Apps o Emojis)
 
-### Entorno de Desarrollo (VS Code)
-El editor Visual Studio Code abierto en el monitor de fondo. En primer plano, el PRRPC muestra el icono correspondiente y el tiempo de sesión.
+El sistema V2 utiliza un sistema de Diccionarios que facilita añadir contenido sin tocar lógica compleja.
+Paso 1: Crear la Imagen
 
-![code](https://github.com/user-attachments/assets/acb33cca-38ba-4fd6-97c8-8df39ad331aa)
+    Consigue un PNG con fondo transparente.
 
-### Navegación Web (Firefox)
-Al cambiar el foco al navegador, el dispositivo actualiza instantáneamente su estado para reflejar la actividad de navegación.
+    Redimensiónalo a 100x100 píxeles (¡Importante! en la v1 era 150, ahora es 100).
 
-![firefox](https://github.com/user-attachments/assets/35271944-9dcd-47d4-8dce-dedabe273c94)
+    Ejecuta el script convertir.py en tu PC para obtener el .bin.
 
-### Terminal del Sistema (Ptyxis)
-Vista detallada del dispositivo mostrando el estado de la terminal de Fedora.
+    Sube el .bin a la RP2040.
 
-![terminal](https://github.com/user-attachments/assets/0c21cdd2-856f-4a4f-9339-7f9949d71b95)
+Paso 2: Registrar en el PC (server.py)
 
-## Reproduccion De Musica (youtube-music)
-Se muestra el icono de Youtube music, asi como lo que se esta reproduciendo
+Si es una App, añádela al diccionario APPS_MAPPING:
+Python
 
-![music](https://github.com/user-attachments/assets/8b5ba6d3-3349-43c8-a1fb-fc6c89d868b9)
-
-
----
-
-## 🎨 Personalización y Nuevas Apps
-
-> ⚠️ **Aviso Importante:**
-> Por defecto, PRRPC solo reconoce y muestra iconos para las aplicaciones definidas en el código original (Firefox, VS Code, Terminal, Spotify, VMware, etc.).
->
-> Si abres una aplicación que no está en la lista, el sistema mostrará el logo de **Fedora** (estado por defecto). Para añadir soporte a nuevas aplicaciones, debes seguir los pasos a continuación.
-
-### Guía para agregar una nueva App
-
-El proceso consta de 3 pasos: Crear el icono, configurar el PC y configurar la RP2040.
-
-#### 1. Preparar el Icono
-1.  Consigue el logo de la app en formato PNG (preferiblemente con fondo transparente).
-2.  Añade el nombre del archivo a la lista en el script `convertir.py` y ejecútalo en tu PC.
-3.  Sube el archivo `.bin` generado (ej: `obsidian.bin`) a la memoria de la RP2040.
-
-#### 2. Actualizar el Host (`monitor_pc.py`)
-Abre el script en tu PC y busca el diccionario `APPS_MAPPING`. Añade una nueva línea con la palabra clave que identifica la app y un **CÓDIGO INTERNO** (en mayúsculas) que tú inventes.
-
-```python
 APPS_MAPPING = {
-    "Code":       "VSCODE",
-    "Firefox":    "FIREFOX",
-    # ... otras apps ...
-    "Obsidian":   "NOTAS"  # <--- NUEVA LÍNEA: Si detecta "Obsidian", envía el código "NOTAS"
+    "Code":     "VSCODE",
+    "Blender":  "BLENDER"  # <--- Nuevo mapeo
 }
-```
-#### 3. Actualizar el Dispositivo (main.py)
 
-Abre el archivo main.py en la RP2040 (usando Thonny) y busca la sección donde se asignan los archivos. Añade tu nuevo código:
-```python
-# ... dentro del bucle principal ...
-if comando == "VSCODE": archivo = "vscode.bin"
-elif comando == "FIREFOX": archivo = "firefox.bin"
-# ... otras apps ...
-elif comando == "NOTAS": archivo = "obsidian.bin" # <--- NUEVA LÍNEA: Asigna el código al archivo
-```
-Guarda los cambios, reinicia el script del PC y ¡listo! Tu nueva app ahora tendrá su propio icono personalizado.
+Si es solo un Emoji para la web, solo necesitas añadir el botón en el HTML del server.py llamando a send('MI_EMOJI').
+Paso 3: Registrar en la RP2040 (main.py)
 
-## 🖼️ Gestión de Imágenes: Uso de `convert2.py`
+Añade la entrada al diccionario EMOJI_MAP. Define el nombre del archivo y el color de fondo (fallback).
+Python
 
-La RP2040, aunque potente, no está optimizada para decodificar archivos `.png` o `.jpg` en tiempo real mientras gestiona la pantalla, ya que esto consume demasiada memoria RAM y CPU.
+EMOJI_MAP = {
+    "VSCODE":   ("vscode.bin", AZUL),
+    "BLENDER":  ("blender.bin", NARANJA), # <--- Nueva definición
+    "MI_EMOJI": ("emoji.bin", AMARILLO)
+}
 
-Para solucionar esto, utilizamos el script **`convert2.py`**.
+🖼️ Herramienta de Conversión (convertir.py)
 
-### ¿Qué hace este script?
-Este script de Python toma tus iconos estándar (PNG con transparencia) y los "pre-renderiza" a un formato crudo llamado **Raw RGB565**. Básicamente, convierte la imagen en una matriz de bytes exacta a la que la pantalla espera recibir, permitiendo que la RP2040 simplemente "copie y pegue" los datos a la pantalla instantáneamente sin procesarlos.
+La RP2040 no procesa PNGs. Usamos este script para convertir imágenes a Raw RGB565 Big Endian.
 
-### Pasos para convertir nuevas imágenes:
+Uso:
 
-1.  **Prepara tus imágenes:**
-    * Deben ser formato **PNG**.
-    * Tamaño recomendado: **150x150 píxeles**.
-    * Fondo transparente (el script añadirá automáticamente el fondo negro para que se fusione con la interfaz).
+    Coloca tus imágenes .png (100x100) en la carpeta del script.
 
-2.  **Ejecuta el conversor:**
-    Asegúrate de tener las imágenes en la misma carpeta que el script y ejecuta:
-    ```bash
-    python3 convert2.py
-    ```
+    Ejecuta python3 convertir.py.
 
-3.  **Resultado:**
-    El script generará archivos con extensión **`.bin`** (ej: `firefox.bin`).
+    El script generará automáticamente los .bin listos para subir.
 
-4.  **Subida al Dispositivo:**
-    Sube estos archivos `.bin` directamente a la raíz de la carpeta `RP2040+` (o la raíz de la placa si usas Thonny) junto con el código `main.py`.
+📝 Notas Técnicas
 
-> **Nota Técnica:** El formato RGB565 utiliza 2 bytes por píxel (5 bits rojo, 6 verde, 5 azul). Un icono de 150x15
+    Resolución: Iconos a 100x100px centrados en una pantalla de 240x280.
+
+    Texto: Se utiliza una fuente VGA externa (vga1_bold_16x16) para mejor legibilidad que la fuente por defecto.
+
+    Prioridad: El "Modo Manual" (Emoji) tiene prioridad absoluta sobre el monitor de ventanas hasta que se pulsa el botón de "Auto".
