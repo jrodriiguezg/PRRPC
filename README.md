@@ -1,6 +1,7 @@
 # 📟 PRRPC (Pico Real Rich Presence)
 
 PRRPC es un monitor de estado físico externo diseñado para entornos Linux modernos (Fedora/Wayland). Muestra información contextual de la aplicación activa en una pantalla secundaria conectada por USB, mejorando la gestión del tiempo y la visibilidad de tareas.
+> La ultima version de este proyecto, con soporte soporte para expresar estados mediante emojis, se puede encontrar en https://github.com/jrodriiguezg/PRRPC/tree/v2
 
 ![Estado](https://img.shields.io/badge/Estado-Estable-blue)
 ![Hardware](https://img.shields.io/badge/Hardware-RP2040--Zero-green)
