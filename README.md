@@ -115,3 +115,8 @@ APPS_MAPPING = {
     "Code":     "VSCODE",
     "Blender":  "BLENDER"  # <--- Nuevo mapeo
 }
+```
+--- 
+## Galeria de Imagenes 
+Imagen de la interfaz web de seleccion de emojis (V1)
+<img width="637" height="620" alt="imagen" src="https://github.com/user-attachments/assets/1320a7ed-cf56-4fd9-a7f6-4c8132280aa8" />
