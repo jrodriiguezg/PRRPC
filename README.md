@@ -4,6 +4,8 @@ PRRPC is an external physical status monitor designed for modern Linux environme
 
 > The latest version of this project, with support for expressing states via emojis, can be found at https://github.com/jrodriiguezg/PRRPC/tree/v2
 
+> This project is currently in development and only tested on Fedora 43 (Gnome) with Wayland.
+
 ![Status](https://img.shields.io/badge/Estado-Estable-blue)
 ![Hardware](https://img.shields.io/badge/Hardware-RP2040--Zero-green)
 ![OS](https://img.shields.io/badge/OS-Fedora%20Wayland-blue)
@@ -212,6 +214,8 @@ This Python script takes your standard icons (PNG with transparency) and "pre-re
 
 <a id="versión-en-español"></a>
 ## 🇪🇸 Versión en Español
+
+> El proyecto esta en desarollo y por ahora solo se ha probado en Fedora 43 (Gnome) con Wayland.
 
 ### ⚙️ Funcionamiento
 
